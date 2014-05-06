@@ -1,19 +1,12 @@
 package {
 	
 	import flash.display.*;
-	
-	import flash.events.*;
-	
+	import flash.events.*;	
 	import flash.geom.*;
-	//import flash.filesystem.*;
-	//import flash.net.URLLoader;
-    //import flash.net.URLRequest;
 	import flash.net.*;
-
 	
 	import flash.media.Sound;
-	import flash.media.SoundChannel
-	
+	import flash.media.SoundChannel	
 	import flash.text.*
 	
 	import flash.utils.Timer;
@@ -25,7 +18,6 @@ package {
 	import fl.transitions.easing.*;
 	import fl.motion.MatrixTransformer;
 	import hiScoreClass
-	//import org.myjerry.as3extensions.io.FileStreamWithLineReader;
 
 	public class ForagingDist extends MovieClip {
 		
@@ -57,7 +49,6 @@ package {
 		public var randomHiScore:Number = 250;
 		public var clusteredHiScore:Number = 250;
 		
-		//public var hiScoreIDArray:Array = new Array();
 		public var hiScoreArray:Array = new Array(10);
 		
 		private var starField:Sprite = new Sprite();
@@ -65,9 +56,9 @@ package {
 		
 		private var stars:Array = new Array();
 		private var overflowStars:Array = new Array();
-		//private var ship = new Ship();
+
 		private var ship = new Trek();
-		//private var scanner:Sprite = new Sprite;
+
 		private var scoreDisplay = new TextField();
 		public var backdrop:Array = new Array();
 		public var overflowBackdrop:Array = new Array();
@@ -99,10 +90,9 @@ package {
 		public var mcX_tween:Tween;
 		public var mcY_tween:Tween;
 		
-		//fuel stuff
+		//fuel related properties
 		public var fuel:Number;
 		public var startFuel:Number = 21000;
-		//public var startFuel:Number = 300;
 		public var fuelDisplay = new TextField();
 		public var prevX:Number = (VIEW_XWINDOW / 2);
 		public var prevY:Number = (VIEW_YWINDOW / 2);
@@ -127,10 +117,6 @@ package {
 		//to move through the instructions
 		public var instructionNumber:int = 1; 
 		
-		//logging
-		//public var fileStream:FileStream = new FileStream();
-		//public var mouseStream:FileStream = new FileStream();
-		
 		public var restartButton:SimpleButton;
 		public var inputField:TextField = new TextField();
 		public var instructField:TextField = new TextField();
@@ -138,18 +124,9 @@ package {
 		public var saveField:TextField = new TextField();
 		
 		public var totalStars:Number = 0;
-		//public static const STARS_NUMBER:Number = 50;
 		
 		public var urlLoader:URLLoader = new URLLoader();
 		public var hiUrlLoader:URLLoader = new URLLoader();
-		// output functionality (moved these into the individual functions
-		
-		/*
-		public var outputUrlLoader:URLLoader = new URLLoader();
-		public var outputVars:URLVariables = new URLVariables();
-		public var outputurl:String = "savewf.php";
-		public var outputUrlRequest:URLRequest = new URLRequest(outputurl);
-		*/
 		
 		//variable to prevent rediving
 		public var diveStop:int = 0;
@@ -163,18 +140,10 @@ package {
 		public static const VIEW_XWINDOW:Number = 1280;
 		public static const VIEW_YWINDOW:Number = 1024;
 		
-		public static const SCANNER_RADIUS:Number = 10;
-			
-		//public static const CONTROL_XWINDOW:Number = 160;
-		//public static const CONTROL_YWINDOW:Number = 480;
-		
-		//public static const ENVIRONMENT_XWINDOW:Number = 12800;
-		//public static const ENVIRONMENT_YWINDOW:Number = 9600;
 		
 		public static const ENVIRONMENT_XWINDOW:Number = 1280;
 		public static const ENVIRONMENT_YWINDOW:Number = 1024;
 			
-		public static const SPEED_INCREMENT:Number = 10;
 		public static const ZOOM_FACTOR:Number = 15;
 			
 		//*************************
@@ -207,26 +176,19 @@ package {
 			instructField.autoSize = TextFieldAutoSize.CENTER;
 			instructField.x = (VIEW_XWINDOW / 2) - (instructField.width / 2);
 			instructField.y = (VIEW_YWINDOW / 2) - 30;
-			//addChild(instructField);
-			
-			
-			
-			//var inputField:TextField = new TextField();
+
 			fieldFormat.color = 0x000000;
 			fieldFormat.size = 18;
 			inputField.defaultTextFormat = fieldFormat;
 			inputField.backgroundColor = 0xFFFFFF;
 			inputField.background = true;
-			//addChild(inputField);
 			inputField.width = 200;
 			inputField.height = 30;
 			inputField.x = (VIEW_XWINDOW / 2) - (inputField.width / 2);
 			inputField.y = (VIEW_YWINDOW / 2) + 10;
 			inputField.type = "input";
 			inputField.multiline = false;
-			//stage.focus = inputField;
 			inputField.restrict = "A-Za-z0-9";
-			//inputField.addEventListener(KeyboardEvent.KEY_DOWN,startExperiment);
 			
 			displayInstructions();
 
@@ -262,9 +224,6 @@ package {
 				updateFuelBar();
 				prevX = ship.x;
 				prevY = ship.y;
-		
-				// Timing and Write functions here
-				//printOut("mouse", mouseStream);
 			}
 			else {
 				if (!gameEnded) {
@@ -292,6 +251,7 @@ package {
 
 		protected function clickHandler(event:MouseEvent):void
 		{
+			//produces movements on click
 			if (!gameEnded) {
 				thrusterChannel.stop();
 				//store starting coords of mouse and ship
@@ -324,7 +284,6 @@ package {
 				
 				
 				var ang_tween:Tween = new Tween(ship,"rotation", None.easeOut, prevAngle, newAngle, 2, false);
-				//ship.rotation = newAngle;
 				prevAngle = newAngle;
 				
 				var thrusterSound:Sound = new Thrusters();
@@ -340,7 +299,7 @@ package {
 
 		protected function keyPressHandler(event:KeyboardEvent):void
 		{
-			//standard arrow key controls
+			//used to zoom in and out with spacebar
 			switch( event.keyCode )
 			{
 	
@@ -365,14 +324,11 @@ package {
 
 		protected function startExperiment(event:KeyboardEvent):void
 		{
+			//begins experiment when enter is pressed
 			switch( event.keyCode )
 			{
 				case Keyboard.ENTER:
-					
 					playerName = inputField.text;
-					//if (!displayPreview()) {
-						//return;
-					//}
 					inputField.removeEventListener(KeyboardEvent.KEY_DOWN, startExperiment);
 					removeChild(inputField);
 					removeChild(instructField);
@@ -382,7 +338,6 @@ package {
 		}
 		
 		//grabs the players initials when they press enter.
-		//need to decide where to store data
 		protected function initialsListener(event:KeyboardEvent):void
 		{
 			switch( event.keyCode )
@@ -395,18 +350,10 @@ package {
 					displayHighScore();
 					
 					break;
-					// playerName = inputField.text;
-					// if (!displayPreview()) {
-						// return;
-					// }
-					// inputField.removeEventListener(KeyboardEvent.KEY_DOWN, startExperiment);
-					// removeChild(inputField);
-					// removeChild(instructField);
-					
-					// break;
 			}
 		}
 		
+		// tween to move the ship
 		protected function tweenFinishHandler(event:TweenEvent):void
 		{
 			ship.x = locX;
@@ -416,6 +363,7 @@ package {
 			thrusterChannel.stop();
 		}
 		
+		//scale tween for zooming in and out
 		protected function tweenScaleHandler(event:TweenEvent):void
 		{
 			var scaleX_tween:Tween = new Tween(event.target.obj, "width", None.easeNone, 5.25, 2.65, 0.5, true);
@@ -428,19 +376,11 @@ package {
 			restartButton.removeEventListener(MouseEvent.CLICK, restartButtonListener);
 			gameEnded = false;
 			if (trialNum == -1) {
-				//remove the preview nodes. make sure this gets called properly
-				trace("Preview party");
-				trace(nodes.length);
 				for (var i = 0; i < nodes.length; i++) {
-					//nodes[i].height = 2.65;
-					//nodes[i].width = 2.64;
 					starField.removeChild(nodes[i]);
 				}
-			
-				//starField.removeChild(backGroundSprite);
 				removeChild(starField);
 				init();
-				//stage.addEventListener(MouseEvent.CLICK, clickHandler);
 			}
 			trialNum++;
 			init();
@@ -484,6 +424,7 @@ package {
 			scoreDisplay.text = "Score:\n[ " + score + " / " + totalStars + " ]";
 		}
 		
+		//fires when the hi scores finish loading
 		protected function hiScoreUrlLoader_complete(event:Event):void
 		{
 			var resources:String = hiUrlLoader.data;
@@ -491,12 +432,7 @@ package {
 			
 			for (var i:int = 0; i < lines.length; i++){
 				var line:Array = lines[i].split(" ");
-				//hiScoreIDArray[i] = line[0];
-				//hiScoreIDArray[i] = line[0];
 				hiScoreArray[i] = new hiScoreClass(line[0], int(line[1]));
-				//hiScoreArray[i].initialAccess = line[0];
-				//hiScoreArray[i].scoreAccess = line[3];
-				//make sure to sort this list before saving it back out
 			}
 			checkHighScore();
 		}
@@ -538,11 +474,11 @@ package {
 					
 					break;
 			}
-			
 			instructionNumber++;
 			displayInstructions();
 		}
 		
+		//detects a click when the hi scores list is shown
 		protected function hiScoresClickHandler(event:MouseEvent):void
 		{
 			stage.removeEventListener(MouseEvent.CLICK, hiScoresClickHandler);
@@ -551,6 +487,7 @@ package {
 			showDebriefing();
 		}
 		
+		//fires when data has successfully saved
 		protected function onCompleteHandler(event:Event):void
 		{
 			saveField.text = "Data Successfully Saved. \nClick to continue."
@@ -559,71 +496,19 @@ package {
 			stage.addEventListener(MouseEvent.CLICK, hiScoresClickHandler);
 		}
 		
+		//displays an error message if data fails to save
 		protected function onErrorHandler(event:IOErrorEvent):void {
-			
 			saveField.text = "ERROR SAVING DATA! ALERT THE EXPERIMENTER IMMEDIATLY"
 			saveField.autoSize = TextFieldAutoSize.CENTER;
 			saveField.x = VIEW_XWINDOW / 2;			
-			//handler stub
-			/*
-			instructionDisplay.text = "ioErrorHandler: " + event;
-			instructionDisplayFormat.align = TextFormatAlign.CENTER;
-			instructionDisplayFormat.color = 0x000000;
-			instructionDisplayFormat.size = 18;
-			instructionDisplayFormat.italic = false;
-			*/
 		}
 		
 		//*************************
 		// Public methods:
 		
-		//not actually used
-		public function isChildOf(displayObjectContainer:DisplayObjectContainer, displayObject:DisplayObject):Boolean 
-		{   
-			for(var i:Number = 0; i < displayObjectContainer.numChildren; i++) {     
-				if (displayObjectContainer.getChildAt(i) == displayObject) {
-					return true;   
-				}
-			}   
-			return false; 
-		
-		}
-		
 		//Initializes the experiment to begin a trial
 		public function init():void
 		{
-			//open file streams
-			/*
-			var fileName:String = playerName + "Trial" + String(trialNum);
-			var logName:String = "Log" + fileName + ".txt";
-			var mouseName:String = "Mouse" + fileName + ".txt";
-			var file1:File = File.applicationDirectory;
-			file1.nativePath += "/logs/" + logName;
-			*/
-			//check if the files already exist and if so error out
-			/*
-			if (trialNum == 0){
-				if (file1.exists) {
-					instructField.text = "Error: ID already exists. Try again and press 'enter'";
-					instructField.autoSize = TextFieldAutoSize.CENTER;
-					return false;
-				}
-			}
-			*/
-			/*
-			var file2:File = File.applicationDirectory;
-			file2.nativePath += "/logs/" + mouseName;
-			fileStream.open(file1, FileMode.WRITE);
-			mouseStream.open(file2, FileMode.WRITE);
-			
-			fileStream.writeUTFBytes("Start Trial ");
-			fileStream.writeUTFBytes(trialNum);
-			fileStream.writeUTFBytes("\n");
-			
-			mouseStream.writeUTFBytes("Start Trial ");
-			mouseStream.writeUTFBytes(trialNum);
-			mouseStream.writeUTFBytes("\n");
-			*/
 			trace("Trial Num: " + String(trialNum) );
 			var str:String = "\nStart Trial " + String(trialNum) + " PLAYER " + playerName + "\n";
 			outputArray.push(str);
@@ -639,7 +524,6 @@ package {
 				currentTrial = randPicker[selection];
 				randPicker.splice(selection, 1)
 				trace("Background:" + String(currentTrial));
-				//trace(randPicker.length);
 				
 				switch( currentTrial ) {
 					case 1:
@@ -694,16 +578,13 @@ package {
 			addChild(uiContainer);
 			ship.x = (VIEW_XWINDOW / 2);
 			ship.y = (VIEW_YWINDOW / 2);
-			//uiContainer.addChild(ship);
 			
 			//initialize score and add text display
 			score = 0;
 			var scoreFormat:TextFormat = new TextFormat();
 			scoreFormat.size = 18;
 			scoreDisplay.defaultTextFormat = scoreFormat;
-			//scoreDisplay.text = "Score:\n[ " + score + " / " + totalStars + " ]";
 			scoreDisplay.text = "Score:\n[ " + score + " / " + totalStars + " ]";
-			//\nHigh:\n[ " + highScore + " ] ";
 			scoreDisplay.autoSize = TextFieldAutoSize.LEFT;
 			scoreDisplay.textColor = 0xFFFFFF;
 			scoreDisplay.x = 5;
@@ -720,15 +601,8 @@ package {
 			if (trialNum > 0 ) {
 				fuel = startFuel;
 			}
-			/*fuelDisplay.text = "Fuel:\n[ " + fuel + " / " + startFuel + " ]";
-			fuelDisplay.autoSize = TextFieldAutoSize.RIGHT;
-			fuelDisplay.textColor = 0xFFFFFF;
-			fuelDisplay.x = VIEW_XWINDOW - 100;
-			fuelDisplay.y = 5;
-			uiContainer.addChild(fuelDisplay);*/
 			drawFuelBar();
 			uiContainer.addChild(ship);
-			//return true;
 		}
 		
 		//reads in stars from a text file based on the trial number
@@ -737,149 +611,22 @@ package {
 			totalStars = 0;
 			var path:String;
 			var map_num:Number = (Math.floor(Math.random() * (0 - 999 + 1)) + 0)
+			//traces used for potential debugging. Playable releases are compiled with traces disabled.
 			trace("Map Number: " + String(map_num));
-			// if (clustered) {
-				// path = "maps/150stars25" + String(map_num) + ".txt";
-			// }
-			// else{
-				// path = "maps/150stars5" + String(map_num) + ".txt";
-			// }
+
 			path = "maps/" + numStarCondition + "stars" + clusteringCondition + String(map_num) + ".txt";
 			trace(path);
-			//var file:File = File.applicationDirectory;
-			/*
-			var path:String;
-			if (clustered) {
-				switch(currentTrial) {
-					case 0:
-						path = "maps/150stars25-0.txt";
-						highScore = 0;
-						break;
-					case 1:
-						path = "maps/150stars25-1.txt";
-						highScore = 272;
-						break;
-					case 2:
-						path = "maps/150stars25-2.txt";
-						highScore = 273;
-						break;
-					case 3:
-						path = "maps/150stars25-3.txt";
-						highScore = 207;
-						break;
-					case 4:
-						path = "maps/150stars25-4.txt";
-						highScore = 258;
-						break;
-					case 5:
-						path = "maps/150stars25-5.txt";
-						highScore = 259;
-						break;
-					case 6:
-						path = "maps/150stars25-6.txt";
-						highScore = 275;
-						break;
-					default:
-						path = "maps/150stars25-1.txt";
-						break;
-				}
-			}
-			else {
-				switch(currentTrial) {
-					case 0:
-						path = "maps/150stars5-0.txt";
-						highScore = 0;
-						break;
-					case 1:
-						path = "maps/150stars5-1.txt";
-						highScore = 344;
-						break;
-					case 2:
-						path = "maps/150stars5-2.txt";
-						highScore = 304;
-						break;
-					case 3:
-						path = "maps/150stars5-3.txt";
-						highScore = 193;
-						break;
-					case 4:
-						path = "maps/150stars5-4.txt";
-						highScore = 276;
-						break;
-					case 5:
-						path = "maps/150stars5-5.txt";
-						highScore = 177;
-						break;
-					case 6:
-						path = "maps/150stars5-6.txt";
-						highScore = 176;
-						break;
-					default:
-						path = "maps/150stars5-1.txt";
-						break;
-				}
-			}*/
-			/*
-			mouseStream.writeUTFBytes(path);
-			mouseStream.writeUTFBytes(" ");
-			mouseStream.writeUTFBytes(String(currentTrial));
-			mouseStream.writeUTFBytes("\n");
-			fileStream.writeUTFBytes(file.nativePath);
-			fileStream.writeUTFBytes(" ");
-			fileStream.writeUTFBytes(String(currentTrial));
-			fileStream.writeUTFBytes("\n");
 			
-			trace(file.nativePath);
-			var stream:FileStreamWithLineReader = new FileStreamWithLineReader();
-			stream.open(file, FileMode.READ);
-			*/
 			var str:String = path + " " + String(currentTrial) + "\n";
 			outputArray.push(str);
 			
 			var urlRequest:URLRequest = new URLRequest(path);
-			//var urlLoader:URLLoader = new URLLoader();
 			urlLoader.addEventListener(Event.COMPLETE, urlLoader_complete);
-			//urlLoader.dataFormat = URLLoaderDataFormat.TEXT;
 			urlLoader.load(urlRequest);
-			
-			
-			//need to move all of this into the event handler
-			/*
-			//remove previously placed nodes and empty the array
-			if (trialNum > 1) {
-				for (var count:Number = 0; count < nodes.length; count++) {
-					nodes.pop();
-				}
-			}
-			
-			//go through file a line at a time to build the collection of nodes
-			var i:int = 0;
-			while(stream.bytesAvailable) {
-				var line:String = stream.readUTFLine();
-				//trace(line);
-				var loc:Array = line.split(" ");
-				//change the color of more valuable nodes
-				if (Number(loc[2]) > 1) {
-					nodes[i] = new asteroid2();
-				}
-				else {
-					nodes[i] = new asteroid();
-				}
-				nodes[i].x = Number(loc[0]); //set x location
-				nodes[i].y = Number(loc[1]); //set y location
-				nodes[i].rotation = Math.floor(Math.random()*(1+180+180))-180; 
-				
-				nodes[i][1] = Number(loc[2]); //set resource value
-				nodes[i][2] = 0; //set to "unfound" state
-				totalStars += Number(loc[2]);
-
-				nodes[i].scaleX = 1 / ZOOM_FACTOR;
-				nodes[i].scaleY = 1 / ZOOM_FACTOR;
-				i++;
-			} 	
-			*/
 		}
 		
+		//checks if the ship has hit a node, and then determines
+		//whether to grant points
 		public function checkNodeCollision(collider):void
 		{
 			if (zoomed) {
@@ -896,11 +643,11 @@ package {
 							score += Number(nodes[i][1]); //increase score
 							scoreIncrease += Number(nodes[i][1]);
 							scoreDisplay.text = "Score:\n[ " + score + " / " + totalStars + " ]"
-							//\nHigh:\n[ " + highScore + " ] ";
 							printOut("Gathered");
 						}
 					}
 				}
+				//plays different sounds based on the quality of the resource found
 				if (nodeHit) {
 					buzzChannel.stop();
 					var coinSound:Sound;
@@ -957,16 +704,17 @@ package {
 			var x:Number = (x2-x1) * (x2-x1);
 			var y:Number = (y2-y1) * (y2-y1);
 			var dist:Number = Math.sqrt(x + y);
-			//trace(dist);
 			return dist;
 		}
 		
+		//gets the angular change
 		public function getAngle(x1:Number, y1:Number, x2:Number, y2:Number):Number
 		{    
 			var radians:Number = Math.atan2(y1-y2, x1-x2);
 			return rad2deg(radians); 
 		}
 		
+		//converts radians to degrees
 		public function rad2deg(rad:Number):Number
 		{   
 			return rad * (180 / Math.PI);
@@ -1069,7 +817,7 @@ package {
 			}
 		}
 
-		
+		//draws the fuel bar at the top of the screen
 		public function drawFuelBar():void
 		{
 			var fuelPercent:int = int((fuel / startFuel) * 100 );
@@ -1085,6 +833,7 @@ package {
 			addChild(fuelBar);
 		}
 		
+		//adjusts the fuel bar to current fuel levels
 		public function updateFuelBar():void
 		{
 			var fuelPercent:Number = (fuel / startFuel);
@@ -1097,43 +846,19 @@ package {
 		{
 			var fileName:String = playerName + "Trial" + String(trialNum);	
 			var logName:String = "Log" + fileName + ".txt"
-			//var file1:File = File.applicationDirectory;
-			//file1.nativePath += "/logs/" + logName;
-			//check if the files already exist and if so error out
-			/*
-			if (file1.exists) {
-				instructField.text = "Error: ID already exists. Try again and press 'enter'";
-				instructField.autoSize = TextFieldAutoSize.CENTER;
-				return false;
-			}
-			*/
-			/*
-			if (clustered){
-				backGroundSprite.graphics.beginBitmapFill(new PreviewClustered(0, 0), null, false);
-			}
-			else {
-				backGroundSprite.graphics.beginBitmapFill(new PreviewRandom(0, 0), null, false);
-			}
-			backGroundSprite.graphics.drawRect(0,0,VIEW_XWINDOW,VIEW_YWINDOW);
-			backGroundSprite.graphics.endFill();
-			*/
-			
 			
 			starField.addChild(backGroundSprite);
 			starField.x = 0;
 			starField.y = 0;
 			addChild(starField);
 			
-			//draw the nodes (may need to change size)
-			
+			//draw the nodes
 			for (var i = 0; i < nodes.length; i++) {
 				starField.addChild(nodes[i]);
 			}
-			
 			trace("Preview");
 			
 			restartGameButton(); 
-			//stage.addEventListener(KeyboardEvent.KEY_DOWN,endPreviewListener);
 			return true;
 		}
 		
@@ -1149,40 +874,7 @@ package {
 			zoomed = false;
 			thrusterChannel.stop()
 			removeChild(fuelBar);
-			
-			//draw game over text
-			/*
-			var gameOverFormat:TextFormat = new TextFormat();
-			gameOverFormat.size = 42;
-			gameOverFormat.color = 0xFFFFFF;
-			var gameOverDisplay:TextField = new TextField();
-			gameOverDisplay.defaultTextFormat = gameOverFormat;
-			gameOverDisplay.text = "FUEL EMPTY\nYour score is " + score;
-			addChild(gameOverDisplay);
-			gameOverDisplay.autoSize = TextFieldAutoSize.CENTER;
-			gameOverDisplay.x = (VIEW_XWINDOW / 2) - (gameOverDisplay.width / 2);
-			gameOverDisplay.y = (VIEW_YWINDOW / 2) - (gameOverDisplay.height / 2);
-			*/
-			//write to log files
-			//mouseStream.writeUTFBytes("FINISHED\n");
-			//fileStream.writeUTFBytes("FINISHED\n");
-			outputArray.push("FINISHED\n");
-			/*
-			//print to high score log
-			var file3:File = File.applicationDirectory;
-			file3.nativePath += "/scores.txt";
-			var highScoreStream:FileStream = new FileStream();
-			highScoreStream.open(file3, FileMode.APPEND);
-			highScoreStream.writeUTFBytes(playerName);
-			highScoreStream.writeUTFBytes(" ");
-			highScoreStream.writeUTFBytes(String(currentTrial));
-			highScoreStream.writeUTFBytes(" ");
-			highScoreStream.writeUTFBytes(String(clustered));
-			highScoreStream.writeUTFBytes(" ");
-			highScoreStream.writeUTFBytes(String(score));
-			highScoreStream.writeUTFBytes("\n");
-			highScoreStream.close();
-			*/
+			outputArray.push("FINISHED\n");			
 			gameEnded = true;
 			
 			// remove event handlers
@@ -1209,23 +901,8 @@ package {
 				//revert back to a plain screen
 				removeChild(starField);
 				removeChild(uiContainer);
-				//removeChild(fuelBG);
-				//removeChild(fuelBar);
+
 				readHiScore();
-				//check the high score in the event handler
-				//checkHighScore();
-				
-				/*
-				var fieldFormat:TextFormat = new TextFormat();
-				fieldFormat.size = 24;
-				fieldFormat.color = 0xFFFFFF;
-				instructField.defaultTextFormat = fieldFormat;
-				instructField.text = "Your total score is " + totalScore + "\n The highest total score so far is " + highScore;
-				instructField.autoSize = TextFieldAutoSize.CENTER;
-				instructField.x = (VIEW_XWINDOW / 2) - (instructField.width / 2);
-				instructField.y = (VIEW_YWINDOW / 2) - 30;
-				addChild(instructField);
-				*/
 			}
 		}
 		
@@ -1240,12 +917,9 @@ package {
 			restartButton.addEventListener(MouseEvent.MOUSE_UP, restartButtonListener)
 		}
 		
+		//makes a url request for the hi score file for the current condition
 		public function readHiScore():void
 		{
-			//get hi score file name
-			//
-			//
-			
 			var fileName:String = clusteringCondition + "-" + numStarCondition + "-hiScore.txt";
 			trace("hi score filename: " + fileName);
 			
@@ -1285,7 +959,6 @@ package {
 			fieldFormat.align = TextFormatAlign.CENTER;
 			fieldFormat.size = 24;
 			fieldFormat.color = 0xFFFFFF;
-			//instructionDisplayFormat.align = TextFormatAlign.CENTER;
 			
 			instructField.defaultTextFormat = fieldFormat;
 			instructField.text = "Your total score is " + totalScore + "\n The highest total score so far is " + highScore;
@@ -1303,10 +976,10 @@ package {
 			addChild(instructField);
 		}
 		
+		//displays a series of instructions. Jumps back
+		//and forth with a click event handler
 		public function displayInstructions():void
 		{
-		
-			
 			switch (instructionNumber)
 			{
 				case 1:
@@ -1315,7 +988,6 @@ package {
 					instructField.defaultTextFormat = fieldFormat;
 					instructField.text = "In this game your goal is to gather as many resources as possible.\n\n You do this by moving your ship through space by clicking with the mouse.\n\nNote: make sure your computer's sound is on.";
 					addChild(instructField);
-					//add image of the ship, possibly of the ship moving
 					ship.x = VIEW_XWINDOW / 2;
 					ship.y = (VIEW_YWINDOW / 2) - 75;
 					addChild(ship);
@@ -1381,6 +1053,7 @@ package {
 					break;
 			}
 		}
+		
 		//shows the debriefing
 		public function showDebriefing():void
 		{
@@ -1388,7 +1061,6 @@ package {
 			
 			var fieldFormat:TextFormat = new TextFormat();
 			fieldFormat.size = 24;
-			//fieldFormat.color = 0xFFFFFF;
 			
 			var nameField:TextField = new TextField();
 			nameField.defaultTextFormat = fieldFormat;
@@ -1401,7 +1073,6 @@ package {
 			nameField.selectable = true;
 			nameField.y = 275;
 			nameField.x = 1280 / 2;
-			//nameField.textColor = 0xFFFFFF;
 			nameField.text = playerName;
 			trace(playerName);
 			
@@ -1423,6 +1094,8 @@ package {
 			addChild(debriefField);
 		}
 		
+		//displays a text field and prepares an event handler
+		//to capture the keyboard responses
 		public function getInitials():void
 		{
 			inputField.restrict = "A-z0-9";
@@ -1434,50 +1107,11 @@ package {
 			
 			instructField.text = "You got a high score! Enter your initials!";
 			addChild(instructField);
-		/*
-			//draw instructions, and input text field
-			var fieldFormat:TextFormat = new TextFormat();
-			fieldFormat.size = 24;
-			fieldFormat.color = 0xFFFFFF;
-			instructField.defaultTextFormat = fieldFormat;
-			instructField.text = "Please type your SONA ID number and then press 'Enter'"
-			instructField.autoSize = TextFieldAutoSize.CENTER;
-			instructField.x = (VIEW_XWINDOW / 2) - (instructField.width / 2);
-			instructField.y = (VIEW_YWINDOW / 2) - 30;
-			addChild(instructField);
-			
-			//var inputField:TextField = new TextField();
-			fieldFormat.color = 0x000000;
-			fieldFormat.size = 18;
-			inputField.defaultTextFormat = fieldFormat;
-			inputField.backgroundColor = 0xFFFFFF;
-			inputField.background = true;
-			addChild(inputField);
-			inputField.width = 200;
-			inputField.height = 30;
-			inputField.x = (VIEW_XWINDOW / 2) - (inputField.width / 2);
-			inputField.y = (VIEW_YWINDOW / 2) + 10;
-			inputField.type = "input";
-			inputField.multiline = false;
-			stage.focus = inputField;
-			inputField.restrict = "A-Za-z0-9";
-			inputField.addEventListener(KeyboardEvent.KEY_DOWN,startExperiment);
-			*/
 		}
 		
+		//displays the hi scores to the player
 		public function displayHighScore( ):void
 		{
-		/*
-			var fieldFormat:TextFormat = new TextFormat();
-			fieldFormat.size = 24;
-			fieldFormat.color = 0xFFFFFF;
-			instructField.defaultTextFormat = fieldFormat;
-			instructField.text = "Please type your SONA ID number and then press 'Enter'"
-			instructField.autoSize = TextFieldAutoSize.CENTER;
-			instructField.x = (VIEW_XWINDOW / 2) - (instructField.width / 2);
-			instructField.y = (VIEW_YWINDOW / 2) - 30;
-			addChild(instructField);
-		*/
 			saveData();
 			var str:String = "Your score was: " + totalScore + "\n\n\nHigh Scores:\n\n";
 			
@@ -1504,57 +1138,20 @@ package {
 			saveField.autoSize = TextFieldAutoSize.CENTER;
 			saveField.x = VIEW_XWINDOW / 2;
 			saveField.y = VIEW_YWINDOW - 175;
-			
-			//save field will be edited by the data save handler
-			
 			addChild(saveField);
-			addChild(instructField);
-			//going to need an event handler here to move from here to debriefing
-			
+			addChild(instructField);	
 		}
 		
+		//function the generates the data string for a single event
 		public function printOut(flavor:String):void
 		{
-			/*
-			if (flavor == "mouse") {
-				stream.writeUTFBytes(String(frameNumber));
-				stream.writeUTFBytes(" ");
-				stream.writeUTFBytes(String(mouseX));
-				stream.writeUTFBytes(" ");
-				stream.writeUTFBytes(String(mouseY));
-				stream.writeUTFBytes("\n");
-			}
-			*/
-				var outstr:String = " ";
-				outstr = flavor + " " + String(frameNumber) + " " + String(ship.x) + " " + String(ship.y) + " " + String(mouseX) + " " + String(mouseY) + " " + String(zoomed) + " " + String(score) + " " + String(fuel) + "\n"
-				
-				outputArray.push(outstr);
-				
-			/*
-				stream.writeUTFBytes(flavor);
-				stream.writeUTFBytes(" ");
-				stream.writeUTFBytes(String(frameNumber));
-				stream.writeUTFBytes(" ");
-				stream.writeUTFBytes(String(ship.x));
-				stream.writeUTFBytes(" ");
-				stream.writeUTFBytes(String(ship.y));
-				stream.writeUTFBytes(" ");
-				stream.writeUTFBytes(String(mouseX));
-				stream.writeUTFBytes(" ");
-				stream.writeUTFBytes(String(mouseY));
-				stream.writeUTFBytes(" ");
-				stream.writeUTFBytes(String(zoomed));
-				stream.writeUTFBytes(" ");
-				stream.writeUTFBytes(String(score));
-				stream.writeUTFBytes(" ");
-				stream.writeUTFBytes(String(fuel));
-				stream.writeUTFBytes("\n");
-				*/
-			
-
+			var outstr:String = " ";
+			outstr = flavor + " " + String(frameNumber) + " " + String(ship.x) + " " + String(ship.y) + " " + String(mouseX) + " " + String(mouseY) + " " + String(zoomed) + " " + String(score) + " " + String(fuel) + "\n"
+			outputArray.push(outstr);
 		}
 		
-		//need to add a "please wait, uploading your data" dialog
+		// saves the data to the server via savewf.php
+		// all data across all trials is saved at the very end
 		public function saveData(  ):void
 		{
 			var outputUrlLoader:URLLoader = new URLLoader();
@@ -1575,14 +1172,14 @@ package {
 			outputUrlLoader.load(outputUrlRequest);
 			outputUrlLoader.addEventListener(Event.COMPLETE, onCompleteHandler);
 			outputUrlLoader.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler);
-			
 		}
 		
 		//saves the hiScore list
 		
 		//note that the score save has no event handlers
 		//we are blindly trusting that if the data saves 
-		//the scores will save too.
+		//the scores will save too. Given that the hi score is
+		//not important for the experiment this is an acceptible, if lazy risk
 		public function saveScore( ):void
 		{
 			var outputUrlLoader:URLLoader = new URLLoader();
@@ -1601,10 +1198,9 @@ package {
 			outputUrlRequest.method = URLRequestMethod.POST;
 			outputUrlLoader.dataFormat = URLLoaderDataFormat.VARIABLES;
 			outputUrlLoader.load(outputUrlRequest);
-			//outputUrlLoader.addEventListener(Event.COMPLETE, onCompleteHandler);
-			//outputUrlLoader.addEventListener(IOErrorEvent.IO_ERROR, onErrorHandler);
 		}
 		
+		//randomly select the number of stars condition
 		public function selectNumStars():void
 		{
 			var rand:int = Math.floor(Math.random()*(1+4-1))+1;
@@ -1624,6 +1220,7 @@ package {
 			}
 		}
 		
+		//randomly select the star density condition
 		public function selectStarDensity():void
 		{
 			var rand:int = Math.floor(Math.random()*(1+4-1))+1;
