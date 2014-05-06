@@ -2,8 +2,10 @@
 
 import random
 
-class Square:	
+class Square:
+    """ Structure to hold information for the recursive function """
 	def __init__(self, x1 = 0, y1 = 0, x2 = 1280, y2 = 1024, stars = 100, direction = 1):
+        """defaults: x1 = 0, y1 = 0, x2 = 1280, y2 = 1024, stars = 100, direction = 1"""
 		self.direction = direction
 		self.x1 = float(x1)
 		self.y1 = float(y1)
@@ -12,6 +14,9 @@ class Square:
 		self.stars = stars
 
 def scatter(sqr, prob):
+    """ Function that recusively builds a 2d clustered environment of a finite size
+        Use prob to specify how clustered. Closer to 0 increases the clustering, closer to 0.5 is more random"""
+        
 	if sqr.stars < 1:
 		return
 		
@@ -67,46 +72,36 @@ def scatter(sqr, prob):
 		
 	scatter(s1, prob)
 	scatter(s2, prob)		
-	
-def randPoints(sqr, file):
-	for i in range(0, num_stars):
-		x = random.randrange(int(sqr.x1), int(sqr.x2))
-		y = random.randrange(int(sqr.y1), int(sqr.y2))
-		file.write('{0} {1}\n'.format(x, y) )
 		
 def countDupes(dupedList):
-   uniqueSet = set(item for item in dupedList)
+    """Consilidates and counts duplicates"""
+   uniqueSet = set(dupedList)
    return [(item, dupedList.count(item)) for item in uniqueSet]
 
 
-
-#filename = '2000stars3.txt'
-conditions = [ .05, .15, .25, .35, .5 ]
-stars = [ 25, 50, 100, 150 ]
-for prob in conditions:
-	for num_stars in stars:
-		for i in range(1000):
-			print i
-			points = []
-			#prob = 0.5
-			#num_stars = 150
-			if len(str(prob)) == 3:
-				#filename = str(num_stars) + 'stars' + str(int(prob * 10)) + '-7.txt'
-				filename = '{0}stars{1}-{2}.txt'.format(num_stars, (int(prob*10)), i)
-			elif len(str(prob)) == 4:
-				if prob == .05:
-					filename = '{0}stars{1}-{2}.txt'.format(num_stars, '05', i)
-				#filename = str(num_stars) + 'stars' + str(int(prob * 10)) + '-7.txt'
-				else:
-					filename = '{0}stars{1}-{2}.txt'.format(num_stars, (int(prob*100)), i)
-			else:
-				print 'Error! Filename could not parse your prob!'
-				break
-			f = open(filename, 'w')
-			   
-			sq = Square(stars=num_stars)
-			scatter(sq, prob)
-			pnts = countDupes(points)
-			for point in pnts:
-				f.write('{0} {1} {2}\n'.format(point[0][0], point[0][1], point[1] ))
-			f.close()		
+if __name__ == '__main__':
+    conditions = [ .05, .15, .25, .35, .5 ]
+    stars = [ 25, 50, 100, 150 ]
+    for prob in conditions:
+        for num_stars in stars:
+            for i in range(1000):
+                print i
+                points = []
+                if len(str(prob)) == 3:
+                    filename = '{0}stars{1}-{2}.txt'.format(num_stars, (int(prob*10)), i)
+                elif len(str(prob)) == 4:
+                    if prob == .05:
+                        filename = '{0}stars{1}-{2}.txt'.format(num_stars, '05', i)
+                    else:
+                        filename = '{0}stars{1}-{2}.txt'.format(num_stars, (int(prob*100)), i)
+                else:
+                    print 'Error! Filename could not parse your prob!'
+                    break
+                f = open(filename, 'w')
+                   
+                sq = Square(stars=num_stars)
+                scatter(sq, prob)
+                pnts = countDupes(points)
+                for point in pnts:
+                    f.write('{0} {1} {2}\n'.format(point[0][0], point[0][1], point[1] ))
+                f.close()		
